@@ -45,13 +45,13 @@ public class Main {
 
     public static void taskFourth() {
 
-        var remains = 7;
-        float firstCase = 0.25f;
-        float secondCase = 0.5f;
+        int remains = 7000;
+        int firstCase = 250;
+        int secondCase = 500;
 
-        var daysInFirstCase = remains/firstCase;
-        var daysInSecondCase = remains/secondCase;
-        var daysOnAverage = (daysInFirstCase + daysInSecondCase)/2;
+        int daysInFirstCase = remains/firstCase;
+        int daysInSecondCase = remains/secondCase;
+        float daysOnAverage = (float) (daysInFirstCase + daysInSecondCase)/2;
 
         System.out.println("Days in first case (250g): " + daysInFirstCase);
         System.out.println("Days in second case (500g): " + daysInSecondCase);
@@ -65,17 +65,17 @@ public class Main {
         int salaryDenis = 83690;
         int salaryKristina = 76230;
 
-        float newSalaryMasha = (float) (salaryMasha * 1.1);
-        float newSalaryDenis = (float) (salaryDenis * 1.1);
-        float newSalaryKristina = (float) (salaryKristina * 1.1);
+        int newSalaryMasha = (int) (salaryMasha * 1.1);
+        int newSalaryDenis = (int) (salaryDenis * 1.1);
+        int newSalaryKristina = (int) (salaryKristina * 1.1);
 
-        float diffSalaryMasha = newSalaryMasha*12 - salaryMasha*12;
-        float diffSalaryDenis = newSalaryDenis*12 - salaryDenis*12;
-        float diffSalaryKristina = newSalaryKristina*12 - salaryKristina*12;
+        int diffSalaryMasha = newSalaryMasha*12 - salaryMasha*12;
+        int diffSalaryDenis = newSalaryDenis*12 - salaryDenis*12;
+        int diffSalaryKristina = newSalaryKristina*12 - salaryKristina*12;
 
         System.out.println("Masha's salary now is " + newSalaryMasha + " rubles." +
                 " And annual income increased by " + diffSalaryMasha + " rubles.");
-        
+
         System.out.println("Denis's salary now is " + newSalaryDenis + " rubles." +
                 " And annual income increased by " + diffSalaryDenis + " rubles.");
 
