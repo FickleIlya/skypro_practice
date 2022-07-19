@@ -1,5 +1,7 @@
 package lessonLoops;
 
+import java.time.LocalDate;
+
 public class Main {
     public static void main(String[] args) {
         task3();
@@ -31,10 +33,10 @@ public class Main {
     }
 
     public static void task3(){
-        int period = 79;
+        int currentYear = LocalDate.now().getYear();
 
-        for (int year = 0; year < 2100; year += period){
-            if (year >= 1800){
+        for (int year = currentYear - 200; year <= currentYear + 100; year++){
+            if (year % 79 == 0){
                 System.out.println(year);
             }
         }
