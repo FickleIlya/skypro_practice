@@ -6,7 +6,6 @@ import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
-        int[] randomArray = generateRandomArray();
         task4();
     }
 
@@ -19,45 +18,49 @@ public class Main {
         return arr;
     }
 
-    public static void task1(int[] array)  {
+    public static void task1()  {
+        int[] randomArray = generateRandomArray();
         int sumPerMonth = 0;
 
-        for (int j : array) {
-            sumPerMonth += j;
+        for (int daySum : randomArray) {
+            sumPerMonth += daySum;
         }
         System.out.println("Сумма трат за месяц составила " + sumPerMonth + " рублей");
     }
 
-    public static void task2(int[] array) {
-        Arrays.sort(array);
+    public static void task2() {
+        int[] randomArray = generateRandomArray();
+        int minDaySum = randomArray[0];
+        int maxDaySum = randomArray[0];
 
-        System.out.println("Минимальная сумма трат за день составила " + array[0] + " рублей. " +
-                "Максимальная сумма трат за день составила " + array[array.length - 1] + " рублей");
+        for (int daySum : randomArray) {
+            if (daySum < minDaySum) {
+                minDaySum = daySum;
+            }
+            if (daySum > maxDaySum){
+                maxDaySum = daySum;
+            }
+        }
+        System.out.println("Минимальная сумма трат за день составила " + minDaySum + " рублей. " +
+                "Максимальная сумма трат за день составила " + maxDaySum + " рублей");
     }
 
-    public static void task3(int[] array) {
+    public static void task3() {
+        int[] randomArray = generateRandomArray();
         int sumPerMonth = 0;
 
-        for (int j : array) {
-            sumPerMonth += j;
+        for (int daySum : randomArray) {
+            sumPerMonth += daySum;
         }
-
-        var averageValue = sumPerMonth / array.length;
+        var averageValue = sumPerMonth / randomArray.length;
         System.out.println("Средняя сумма трат за месяц составила " + averageValue + " рублей");
     }
 
     public static void task4() {
         char[] reverseFullName = { 'n', 'a', 'v', 'I', ' ', 'v', 'o', 'n', 'a', 'v', 'I'};
-        char currentLetter;
-        char letterToSwap;
 
-        for (int i = 0; i < reverseFullName.length / 2; i++) {
-            currentLetter = reverseFullName[i];
-            letterToSwap = reverseFullName[reverseFullName.length - 1 - i];
-
-            reverseFullName[reverseFullName.length - 1 - i] = currentLetter;
-            reverseFullName[i] = letterToSwap;
+        for (int i = reverseFullName.length - 1; i >= 0; i--) {
+            System.out.print(reverseFullName[i]);
         }
-        System.out.println(Arrays.toString(reverseFullName));
     }
 }
