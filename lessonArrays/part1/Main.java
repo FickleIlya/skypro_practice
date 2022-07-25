@@ -1,11 +1,11 @@
-package lessonArrays;
+package lessonArrays.part1;
 
 import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
 
-        task4();
+        task3();
     }
 
     public static void task1(){
@@ -22,8 +22,7 @@ public class Main {
         for (int i = 0; i < arr1.length; i++) {
 
             if (i == arr1.length - 1){
-                System.out.print(arr1[i]);
-                System.out.println();
+                System.out.println(arr1[i]);
             } else{
                 System.out.print(arr1[i] + ", ");
             }
@@ -31,8 +30,7 @@ public class Main {
 
         for (int i = 0; i < arr2.length; i++) {
             if (i == arr2.length - 1){
-                System.out.print(arr2[i]);
-                System.out.println();
+                System.out.println(arr2[i]);
             } else{
                 System.out.print(arr2[i] + ", ");
             }
@@ -40,7 +38,7 @@ public class Main {
 
         for (int i = 0; i < arr3.length; i++) {
             if (i == arr3.length - 1){
-                System.out.print(arr3[i]);
+                System.out.println(arr3[i]);
             } else{
                 System.out.print(arr3[i] + ", ");
             }
@@ -55,8 +53,7 @@ public class Main {
         for (int i = arr1.length - 1; i >= 0; i--) {
 
             if (i == 0){
-                System.out.print(arr1[i]);
-                System.out.println();
+                System.out.println(arr1[i]);
             } else{
                 System.out.print(arr1[i] + ", ");
             }
@@ -64,8 +61,7 @@ public class Main {
 
         for (int i = arr2.length - 1; i >= 0; i--) {
             if (i == 0){
-                System.out.print(arr2[i]);
-                System.out.println();
+                System.out.println(arr2[i]);
             } else{
                 System.out.print(arr2[i] + ", ");
             }
@@ -73,7 +69,7 @@ public class Main {
 
         for (int i = arr3.length - 1; i >= 0; i--) {
             if (i == 0){
-                System.out.print(arr3[i]);
+                System.out.println(arr3[i]);
             } else{
                 System.out.print(arr3[i] + ", ");
             }
