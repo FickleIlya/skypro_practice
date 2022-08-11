@@ -1,4 +1,4 @@
-package lessonObjects;
+package Introduction.lessonObjectMethods;
 
 public class Book {
     private final String title;
@@ -27,7 +27,22 @@ public class Book {
         this.yearPublished = yearPublished;
     }
 
-    public String toString(){
-        return this.author.getName() + " " + this.author.getSurname() + ": " + this.title + ": " + this.yearPublished;
+    @Override
+    public String toString() {
+        return author.getName() + " " + author.getSurname() + ": " + title + ": " + yearPublished;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        Book book = (Book) obj;
+        return title.equals(book.title) && author.equals(book.author);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(author, title, yearPublished);
     }
 }

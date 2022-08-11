@@ -1,4 +1,4 @@
-package lessonObjectMethods;
+package Introduction.lessonObjects;
 
 public class Library {
 

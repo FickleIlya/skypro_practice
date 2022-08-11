@@ -1,4 +1,4 @@
-package lessonObjects;
+package Introduction.lessonObjects;
 
 public class Author {
     private final String name;

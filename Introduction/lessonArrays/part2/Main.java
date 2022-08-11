@@ -1,6 +1,5 @@
-package lessonArrays.part2;
+package Introduction.lessonArrays.part2;
 
-import java.util.Arrays;
 import java.util.Random;
 
 

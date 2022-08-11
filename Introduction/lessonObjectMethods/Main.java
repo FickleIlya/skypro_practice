@@ -1,4 +1,4 @@
-package lessonObjectMethods;
+package Introduction.lessonObjectMethods;
 
 public class Main {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package lessonObjectMethods;
+package Introduction.lessonObjectMethods;
 
 public class Author {
     private final String name;
@@ -24,7 +24,7 @@ public class Author {
 
     @Override
     public boolean equals(Object obj) {
-        if (this.getClass() != obj.getClass() || obj == null) {
+        if (this.getClass() != obj.getClass()) {
             return false;
         }
         Author author_to_equal = (Author) obj;

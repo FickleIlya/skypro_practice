@@ -1,4 +1,4 @@
-package lessonObjects;
+package Introduction.lessonObjectMethods;
 
 public class Library {
 
@@ -33,7 +33,7 @@ public class Library {
         String foundBook = "Book not found";
         for (Book book : this.books){
             if (book.getTitle().equals(title)) {
-                if (!book.getTitle().equals(null) && !book.getAuthor().equals(null) && book.getYearPublished() != 0) {
+                if (book.getTitle() != null && book.getAuthor() != null && book.getYearPublished() != 0) {
                     foundBook = book.getTitle() + " by " + book.getAuthor().getName() + " " + book.getAuthor().getSurname()
                             + " was published in " + book.getYearPublished();
                 }
