@@ -3,34 +3,64 @@ package Introduction.CourseWork;
 import static java.lang.Math.abs;
 
 public class EmployeeBook {
-    private final Employee[] Storage;
+    private final Employee[] storage;
 
     public EmployeeBook(int arrayLength) {
-        this.Storage = new Employee[arrayLength];
+        if (arrayLength <= 0) {
+            throw new IllegalArgumentException("arrayLength must be greater than 0");
+        }
+        this.storage = new Employee[arrayLength];
     }
 
     // Employees
     public void addEmployee(Employee employee) {
-        for (int i = 0; i < Storage.length; i++) {
-            if (Storage[i] != null) {
-                this.Storage[i] = employee;
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i] != null) {
+                this.storage[i] = employee;
                 break;
             }
         }
+        throw new ArrayStoreException("EmployeeBook is full");
     }
 
     public void deleteEmployee(int id, String fio){
-        for (int i = 0; i < Storage.length; i++) {
-            if (Storage[i].getId() == id && Storage[i].getFIO().equals(fio)) {
-                this.Storage[i] = null;
-                break;
+//        if (fio != null){
+//            for (int i = 0; i < storage.length; i++) {
+//                if (storage[i].getId() == id && storage[i].getFio().equals(fio)) {
+//                    this.storage[i] = null;
+//                    break;
+//                }
+//            }
+//            throw new ArrayStoreException("Unknown employee");
+//        }
+//        throw new IllegalArgumentException("FIO must be not null");
+
+        int employeeIdToDelete = 0;
+        int lastEmployeeId = storage.length - 1;
+        if (fio != null) {
+            for (int i = 0; i < storage.length; i++) {
+                if (storage[i].getId() == id && storage[i].getFio().equals(fio)) {
+                    employeeIdToDelete = i;
+                    break;
+                } else if (i == storage.length - 1){
+                    throw new ArrayStoreException("Unknown employee");
+                }
             }
+            for (int i = storage.length - 1; i > 0; i--){
+                if (storage[i] != null) {
+                    lastEmployeeId = i;
+                    break;
+                }
+            }
+            storage[employeeIdToDelete] = storage[lastEmployeeId];
+            storage[lastEmployeeId] = null;
         }
+        throw new IllegalArgumentException("FIO must be not null");
     }
 
     public String getEmployees(){
         StringBuilder employees = new StringBuilder("");
-        for (Employee employee : Storage) {
+        for (Employee employee : storage) {
             if (employee != null) {
                 employees.append(employee).append(", ");
             } else break;
@@ -39,40 +69,42 @@ public class EmployeeBook {
     }
 
     public void changeSalaryByFIO(String fio, float newSalary){
-        for (Employee employee : Storage) {
-            if (employee != null && employee.getFIO().equals(fio)) {
+        for (Employee employee : storage) {
+            if (employee != null && employee.getFio().equals(fio)) {
                 employee.setSalary(newSalary);
             }else if (employee == null) break;
         }
     }
 
     public void changeDepartmentByFIO(String fio, int newDepartment){
-        for (Employee employee : Storage) {
-            if (employee != null && employee.getFIO().equals(fio)) {
+        for (Employee employee : storage) {
+            if (employee != null && employee.getFio().equals(fio)) {
                 employee.setDepartment(newDepartment);
-            }else if (employee == null) break;
+            }else if (employee == null) {
+                break;
+            }
         }
     }
 
     public void getAllFIOEmployees(){
         StringBuilder allFio = new StringBuilder();
-        for (Employee employee : Storage) {
+        for (Employee employee : storage) {
             if (employee != null) {
-                allFio.append(employee.getFIO()).append(", ");
+                allFio.append(employee.getFio()).append(", ");
             } else break;
         }
         System.out.println(allFio.substring(0, allFio.lastIndexOf(",")));
     }
 
+    // Departments
     public void departmentsEmployees(){
-//        Employee[][] departments = new Employee[5][storage.length];
         StringBuilder department1 = new StringBuilder("First department: ");
         StringBuilder department2 = new StringBuilder("Second department: ");
         StringBuilder department3 = new StringBuilder("Third department: ");
         StringBuilder department4 = new StringBuilder("Fourth department: ");
         StringBuilder department5 = new StringBuilder("Fifth department: ");
 
-        for (Employee employee : Storage) {
+        for (Employee employee : storage) {
             if (employee != null) {
                 switch (employee.getDepartment()){
                     case 1:
@@ -85,7 +117,11 @@ public class EmployeeBook {
                         department4.append(employee);
                     case 5:
                         department5.append(employee);
+                    default:
+                        throw new IllegalArgumentException("Unknown department");
                 }
+            } else {
+                break;
             }
         }
         System.out.println(department1);
@@ -95,40 +131,40 @@ public class EmployeeBook {
         System.out.println(department5);
     }
 
-    // Departments
-    public Employee employeeWithMinSalary(int department){
-        float minSalary = Storage[0].getSalary();
+    public Employee employeeWithMinSalaryInDepartment(int department){
         int id = 0;
+        float minSalary = storage[id].getSalary();
 
-        for (int i = 1; i < Storage.length; i++) {
-            if (Storage[i].getSalary() < minSalary && Storage[i].getDepartment() == department) {
-                id = Storage[i].getId();
-            }else if (Storage[i] == null) {
+        for (int i = 1; i < storage.length; i++) {
+            if (storage[i].getSalary() < minSalary && storage[i].getDepartment() == department) {
+                id = storage[i].getId();
+            }else if (storage[i] == null) {
                 break;
             }
         }
-        return Storage[id];
+        return storage[id];
     }
 
-    public Employee employeeWithMaxSalary(int department){
-        float maxSalary = Storage[0].getSalary();
+    public Employee employeeWithMaxSalaryInDepartment(int department){
         int id = 0;
+        float maxSalary = storage[id].getSalary();
 
-        for (int i = 1; i < Storage.length; i++) {
-            if (Storage[i].getSalary() > maxSalary && Storage[i].getDepartment() == department) {
-                id = Storage[i].getId();
-            }else if (Storage[i] == null) {
+
+        for (int i = 1; i < storage.length; i++) {
+            if (storage[i].getSalary() > maxSalary && storage[i].getDepartment() == department) {
+                id = storage[i].getId();
+            }else if (storage[i] == null) {
                 break;
             }
         }
-        return Storage[id];
+        return storage[id];
     }
 
-    public String getEmployees(int department){
+    public String employeesInDepartment(int department){
         StringBuilder employeesString = new StringBuilder("");
-        for (Employee employee : Storage) {
+        for (Employee employee : storage) {
             if (employee != null && employee.getDepartment() == department) {
-                employeesString.append(employee.getId()).append(", ").append(employee.getFIO()).append(", ").append(employee.getSalary()).append("; ");
+                employeesString.append(employee.getId()).append(", ").append(employee.getFio()).append(", ").append(employee.getSalary()).append("; ");
             }else if (employee == null) {
                 break;
             }
@@ -136,10 +172,10 @@ public class EmployeeBook {
         return employeesString.substring(0, employeesString.lastIndexOf(";"));
     }
 
-    public float salaryCosts(int department){
+    public float salaryCostsInDepartment(int department){
         float total = 0.0f;
 
-        for (Employee employee : Storage) {
+        for (Employee employee : storage) {
             if (employee != null && employee.getDepartment() == department) {
                 total += employee.getSalary();
             }else if (employee == null) {
@@ -149,23 +185,25 @@ public class EmployeeBook {
         return total;
     }
 
-    public float averageSalary(int department, float totalSalary){
+    public float averageSalaryInDepartment(int department){
         int countEmployees = 0;
-        for (Employee employee : Storage) {
+        for (Employee employee : storage) {
             if (employee != null && employee.getDepartment() == department) {
                 countEmployees++;
             }else if (employee == null) {
                 break;
             }
         }
-        return totalSalary/countEmployees;
+        return this.salaryCostsInDepartment(department)/countEmployees;
     }
 
-    public void diffSalaryWithChange(int department, float percent){
-        for (Employee employee : Storage) {
+    public void diffSalaryWithChangeInDepartment(int department, float percent){
+        float diff;
+
+        for (Employee employee : storage) {
             if (employee != null && employee.getDepartment() == department) {
-                float diff = abs(employee.getSalary() - employee.getSalary()*percent);
-                System.out.println(employee.getFIO() + ": " + diff);
+                diff = abs(employee.getSalary() - employee.getSalary()*percent);
+                System.out.println(employee.getFio() + ": " + diff);
             }else if (employee == null) {
                 break;
             }
@@ -177,71 +215,86 @@ public class EmployeeBook {
     public float salaryCosts(){
         float total = 0.0f;
 
-        for (Employee employee : Storage) {
+        for (Employee employee : storage) {
             if (employee != null) {
                 total += employee.getSalary();
-            } else break;
+            } else {
+                break;
+            }
         }
         return total;
     }
 
-    public Employee getEmployeeWithMinSalary(){
-        float minSalary = Storage[0].getSalary();
+    public Employee employeeWithMinSalary(){
         int id = 0;
+        float minSalary = storage[id].getSalary();
 
-        for (int i = 1; i < Storage.length; i++) {
-            if (Storage[i] != null && Storage[i].getSalary() < minSalary) {
-                id = Storage[i].getId();
-            } else break;
+        for (int i = 1; i < storage.length; i++) {
+            if (storage[i] != null && storage[i].getSalary() < minSalary) {
+                id = storage[i].getId();
+            } else {
+                break;
+            }
         }
-        return Storage[id];
+        return storage[id];
     }
 
-    public Employee getEmployeeWithMaxSalary(){
-        float maxSalary = Storage[0].getSalary();
+    public Employee employeeWithMaxSalary(){
         int id = 0;
+        float maxSalary = storage[id].getSalary();
 
-        for (int i = 1; i < Storage.length; i++) {
-            if (Storage[i] != null && Storage[i].getSalary() > maxSalary) {
-                id = Storage[i].getId();
-            } else break;
+
+        for (int i = 1; i < storage.length; i++) {
+            if (storage[i] != null && storage[i].getSalary() > maxSalary) {
+                id = storage[i].getId();
+            } else {
+                break;
+            }
         }
-        return Storage[id];
+        return storage[id];
     }
 
-    public float averageSalary(float total){
+    public float averageSalary(){
         int employeesCount = 0;
-        for (Employee employee : Storage) {
+        for (Employee employee : storage) {
             if (employee != null) {
                 employeesCount++;
-            } else break;
+            } else {
+                break;
+            }
         }
-        return total / employeesCount;
+        return this.salaryCosts() / employeesCount;
     }
 
     public void diffSalaryWithChange(float percent){
-        for (Employee employee : Storage) {
+        for (Employee employee : storage) {
             if (employee != null) {
                 float diff = abs(employee.getSalary() - employee.getSalary()*percent);
-                System.out.println(employee.getFIO() + ": " + diff);
-            } else break;
+                System.out.println(employee.getFio() + ": " + diff);
+            } else {
+                break;
+            }
 
         }
     }
 
     public void employeesWithSalaryLT(float salary){
-        for (Employee employee : Storage) {
+        for (Employee employee : storage) {
             if (employee != null && employee.getSalary() < salary){
-                System.out.println(employee.getId() + ", " + employee.getFIO() + ", " + employee.getSalary());
-            }else if (employee == null) break;
+                System.out.println(employee.getId() + ", " + employee.getFio() + ", " + employee.getSalary());
+            }else if (employee == null) {
+                break;
+            }
         }
     }
 
     public void employeesWithSalaryGTE(float salary){
-        for (Employee employee : Storage) {
+        for (Employee employee : storage) {
             if (employee != null && employee.getSalary() >= salary){
-                System.out.println(employee.getId() + ", " + employee.getFIO() + ", " + employee.getSalary());
-            }else if (employee == null) break;
+                System.out.println(employee.getId() + ", " + employee.getFio() + ", " + employee.getSalary());
+            }else if (employee == null) {
+                break;
+            }
         }
     }
 
