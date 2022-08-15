@@ -24,17 +24,6 @@ public class EmployeeBook {
     }
 
     public void deleteEmployee(int id, String fio){
-//        if (fio != null){
-//            for (int i = 0; i < storage.length; i++) {
-//                if (storage[i].getId() == id && storage[i].getFio().equals(fio)) {
-//                    this.storage[i] = null;
-//                    break;
-//                }
-//            }
-//            throw new ArrayStoreException("Unknown employee");
-//        }
-//        throw new IllegalArgumentException("FIO must be not null");
-
         int employeeIdToDelete = 0;
         int lastEmployeeId = storage.length - 1;
         if (fio != null) {
@@ -43,10 +32,10 @@ public class EmployeeBook {
                     employeeIdToDelete = i;
                     break;
                 } else if (i == storage.length - 1){
-                    throw new ArrayStoreException("Unknown employee");
+                    throw new ArrayStoreException("Employee not found");
                 }
             }
-            for (int i = storage.length - 1; i > 0; i--){
+            for (int i = lastEmployeeId; i > 0; i--){
                 if (storage[i] != null) {
                     lastEmployeeId = i;
                     break;
@@ -63,7 +52,9 @@ public class EmployeeBook {
         for (Employee employee : storage) {
             if (employee != null) {
                 employees.append(employee).append(", ");
-            } else break;
+            } else {
+                break;
+            }
         }
         return employees.substring(0, employees.lastIndexOf(","));
     }
@@ -72,7 +63,10 @@ public class EmployeeBook {
         for (Employee employee : storage) {
             if (employee != null && employee.getFio().equals(fio)) {
                 employee.setSalary(newSalary);
-            }else if (employee == null) break;
+                break;
+            }else if (employee == null) {
+                throw new NullPointerException("Employee not found");
+            }
         }
     }
 
@@ -80,8 +74,9 @@ public class EmployeeBook {
         for (Employee employee : storage) {
             if (employee != null && employee.getFio().equals(fio)) {
                 employee.setDepartment(newDepartment);
-            }else if (employee == null) {
                 break;
+            }else if (employee == null) {
+                throw new NullPointerException("Employee not found");
             }
         }
     }
@@ -91,7 +86,9 @@ public class EmployeeBook {
         for (Employee employee : storage) {
             if (employee != null) {
                 allFio.append(employee.getFio()).append(", ");
-            } else break;
+            } else {
+                break;
+            }
         }
         System.out.println(allFio.substring(0, allFio.lastIndexOf(",")));
     }
