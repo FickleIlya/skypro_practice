@@ -14,7 +14,7 @@ public class Employee {
     public void setSalary(float salary) {this.salary = salary;}
     public void setDepartment(int department) {this.department = department;}
 
-    public Employee(String fio, int department, int salary){
+    public Employee(String fio, int department, float salary){
         this.id = ++counter;
         this.fio = fio;
         this.department = department;

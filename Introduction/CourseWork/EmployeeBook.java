@@ -15,36 +15,26 @@ public class EmployeeBook {
     // Employees
     public void addEmployee(Employee employee) {
         for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null) {
+            if (storage[i] == null) {
                 this.storage[i] = employee;
+                break;
+            } else if (i == storage.length - 1){
+                throw new ArrayStoreException("EmployeeBook is full");
+            }
+        }
+    }
+
+    public void deleteEmployee(String fio) {
+        if (fio == null) {
+            throw new IllegalArgumentException("FIO must be not null and ID be in [0, array length - 1]");
+        }
+
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i].getFio().equals(fio)){
+                storage[i] = null;
                 break;
             }
         }
-        throw new ArrayStoreException("EmployeeBook is full");
-    }
-
-    public void deleteEmployee(int id, String fio){
-        int employeeIdToDelete = 0;
-        int lastEmployeeId = storage.length - 1;
-        if (fio != null) {
-            for (int i = 0; i < storage.length; i++) {
-                if (storage[i].getId() == id && storage[i].getFio().equals(fio)) {
-                    employeeIdToDelete = i;
-                    break;
-                } else if (i == storage.length - 1){
-                    throw new ArrayStoreException("Employee not found");
-                }
-            }
-            for (int i = lastEmployeeId; i > 0; i--){
-                if (storage[i] != null) {
-                    lastEmployeeId = i;
-                    break;
-                }
-            }
-            storage[employeeIdToDelete] = storage[lastEmployeeId];
-            storage[lastEmployeeId] = null;
-        }
-        throw new IllegalArgumentException("FIO must be not null");
     }
 
     public String getEmployees(){
@@ -52,32 +42,38 @@ public class EmployeeBook {
         for (Employee employee : storage) {
             if (employee != null) {
                 employees.append(employee).append(", ");
-            } else {
-                break;
             }
         }
         return employees.substring(0, employees.lastIndexOf(","));
     }
 
     public void changeSalaryByFIO(String fio, float newSalary){
+        int cnt = 1;
         for (Employee employee : storage) {
             if (employee != null && employee.getFio().equals(fio)) {
                 employee.setSalary(newSalary);
                 break;
-            }else if (employee == null) {
-                throw new NullPointerException("Employee not found");
             }
+            cnt += 1;
+        }
+
+        if (cnt == storage.length) {
+            throw new ArrayStoreException("Employee not found");
         }
     }
 
     public void changeDepartmentByFIO(String fio, int newDepartment){
+        int cnt = 1;
         for (Employee employee : storage) {
             if (employee != null && employee.getFio().equals(fio)) {
                 employee.setDepartment(newDepartment);
                 break;
-            }else if (employee == null) {
-                throw new NullPointerException("Employee not found");
             }
+            cnt += 1;
+        }
+
+        if (cnt == storage.length) {
+            throw new ArrayStoreException("Employee not found");
         }
     }
 
@@ -86,10 +82,13 @@ public class EmployeeBook {
         for (Employee employee : storage) {
             if (employee != null) {
                 allFio.append(employee.getFio()).append(", ");
-            } else {
-                break;
             }
         }
+
+        if (allFio.toString().equals("")) {
+            throw new ArrayStoreException("EmployeeBook is empty");
+        }
+
         System.out.println(allFio.substring(0, allFio.lastIndexOf(",")));
     }
 
@@ -117,8 +116,6 @@ public class EmployeeBook {
                     default:
                         throw new IllegalArgumentException("Unknown department");
                 }
-            } else {
-                break;
             }
         }
         System.out.println(department1);
@@ -134,9 +131,8 @@ public class EmployeeBook {
 
         for (int i = 1; i < storage.length; i++) {
             if (storage[i].getSalary() < minSalary && storage[i].getDepartment() == department) {
-                id = storage[i].getId();
-            }else if (storage[i] == null) {
-                break;
+                id = i;
+                minSalary = storage[i].getSalary();
             }
         }
         return storage[id];
@@ -149,9 +145,8 @@ public class EmployeeBook {
 
         for (int i = 1; i < storage.length; i++) {
             if (storage[i].getSalary() > maxSalary && storage[i].getDepartment() == department) {
-                id = storage[i].getId();
-            }else if (storage[i] == null) {
-                break;
+                id = i;
+                maxSalary = storage[i].getSalary();
             }
         }
         return storage[id];
@@ -162,10 +157,13 @@ public class EmployeeBook {
         for (Employee employee : storage) {
             if (employee != null && employee.getDepartment() == department) {
                 employeesString.append(employee.getId()).append(", ").append(employee.getFio()).append(", ").append(employee.getSalary()).append("; ");
-            }else if (employee == null) {
-                break;
             }
         }
+
+        if (employeesString.toString().equals("")) {
+            throw new ArrayStoreException("Department is empty");
+        }
+
         return employeesString.substring(0, employeesString.lastIndexOf(";"));
     }
 
@@ -175,8 +173,6 @@ public class EmployeeBook {
         for (Employee employee : storage) {
             if (employee != null && employee.getDepartment() == department) {
                 total += employee.getSalary();
-            }else if (employee == null) {
-                break;
             }
         }
         return total;
@@ -187,8 +183,6 @@ public class EmployeeBook {
         for (Employee employee : storage) {
             if (employee != null && employee.getDepartment() == department) {
                 countEmployees++;
-            }else if (employee == null) {
-                break;
             }
         }
         return this.salaryCostsInDepartment(department)/countEmployees;
@@ -201,8 +195,6 @@ public class EmployeeBook {
             if (employee != null && employee.getDepartment() == department) {
                 diff = abs(employee.getSalary() - employee.getSalary()*percent);
                 System.out.println(employee.getFio() + ": " + diff);
-            }else if (employee == null) {
-                break;
             }
 
         }
@@ -215,8 +207,6 @@ public class EmployeeBook {
         for (Employee employee : storage) {
             if (employee != null) {
                 total += employee.getSalary();
-            } else {
-                break;
             }
         }
         return total;
@@ -228,9 +218,8 @@ public class EmployeeBook {
 
         for (int i = 1; i < storage.length; i++) {
             if (storage[i] != null && storage[i].getSalary() < minSalary) {
-                id = storage[i].getId();
-            } else {
-                break;
+                id = i;
+                minSalary = storage[i].getSalary();
             }
         }
         return storage[id];
@@ -243,9 +232,8 @@ public class EmployeeBook {
 
         for (int i = 1; i < storage.length; i++) {
             if (storage[i] != null && storage[i].getSalary() > maxSalary) {
-                id = storage[i].getId();
-            } else {
-                break;
+                id = i;
+                maxSalary = storage[i].getSalary();
             }
         }
         return storage[id];
@@ -256,8 +244,6 @@ public class EmployeeBook {
         for (Employee employee : storage) {
             if (employee != null) {
                 employeesCount++;
-            } else {
-                break;
             }
         }
         return this.salaryCosts() / employeesCount;
@@ -268,8 +254,6 @@ public class EmployeeBook {
             if (employee != null) {
                 float diff = abs(employee.getSalary() - employee.getSalary()*percent);
                 System.out.println(employee.getFio() + ": " + diff);
-            } else {
-                break;
             }
 
         }
@@ -279,8 +263,6 @@ public class EmployeeBook {
         for (Employee employee : storage) {
             if (employee != null && employee.getSalary() < salary){
                 System.out.println(employee.getId() + ", " + employee.getFio() + ", " + employee.getSalary());
-            }else if (employee == null) {
-                break;
             }
         }
     }
@@ -289,8 +271,6 @@ public class EmployeeBook {
         for (Employee employee : storage) {
             if (employee != null && employee.getSalary() >= salary){
                 System.out.println(employee.getId() + ", " + employee.getFio() + ", " + employee.getSalary());
-            }else if (employee == null) {
-                break;
             }
         }
     }
