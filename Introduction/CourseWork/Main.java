@@ -15,7 +15,7 @@ public class Main {
         Employee jasonNew = new Employee("Ebraham Jason Willson", 3, 10000);
 
         storage.addEmployee(sarah);
-        System.out.println(storage.getEmployees());
+        storage.getEmployees();
         storage.getAllFIOEmployees();
         storage.addEmployee(jason);
         storage.addEmployee(mildred);
@@ -23,11 +23,11 @@ public class Main {
         storage.addEmployee(yawar);
         storage.addEmployee(nick);
         storage.addEmployee(sofi);
-        System.out.println(storage.getEmployees());
+        storage.getEmployees();
         storage.deleteEmployee("Ebraham Jason Willson");
-        System.out.println(storage.getEmployees());
+        storage.getEmployees();
         storage.addEmployee(jasonNew);
-        System.out.println(storage.getEmployees());
+        storage.getEmployees();
 
 
 

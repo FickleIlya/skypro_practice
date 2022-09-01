@@ -37,14 +37,12 @@ public class EmployeeBook {
         }
     }
 
-    public String getEmployees(){
-        StringBuilder employees = new StringBuilder("");
+    public void getEmployees(){
         for (Employee employee : storage) {
             if (employee != null) {
-                employees.append(employee).append(", ");
+                System.out.print(employee + ", ");
             }
         }
-        return employees.substring(0, employees.lastIndexOf(","));
     }
 
     public void changeSalaryByFIO(String fio, float newSalary){
@@ -185,6 +183,10 @@ public class EmployeeBook {
                 countEmployees++;
             }
         }
+
+        if (countEmployees == 0) {
+            throw new ArithmeticException("Department is empty");
+        }
         return this.salaryCostsInDepartment(department)/countEmployees;
     }
 
@@ -245,6 +247,10 @@ public class EmployeeBook {
             if (employee != null) {
                 employeesCount++;
             }
+        }
+
+        if (employeesCount == 0) {
+            throw new ArithmeticException("EmployeeBook is empty");
         }
         return this.salaryCosts() / employeesCount;
     }
