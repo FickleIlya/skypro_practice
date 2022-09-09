@@ -19,4 +19,10 @@ public abstract class Transport {
     public void setWheelsCount(int wheelsCount) {
         this.wheelsCount = wheelsCount;
     }
+
+    protected void updateTyre(){
+            System.out.println("Меняем покрышку");
+    }
+    protected abstract void checkEngine();
+    protected abstract void checkTrailer();
 }

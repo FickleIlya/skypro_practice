@@ -1,8 +1,13 @@
 package Core.lessonOOP2;
 
-public class Bicycle extends Transport implements Tyres{
+public class Bicycle extends Transport{
     @Override
-    public void updateTyre() {
-        System.out.println("Меняем покрышку");
+    protected void checkEngine() {
+        System.out.println("No engine");
+    }
+
+    @Override
+    protected void checkTrailer() {
+        System.out.println("No trailer");
     }
 }
