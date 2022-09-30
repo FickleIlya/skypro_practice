@@ -4,7 +4,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        EmployeeBook storage = new EmployeeBook(10);
+        EmployeeBook storage = new EmployeeBook();
         Employee sarah = new Employee("Ebraham Sara Willson", 4, 10000);
         Employee jason = new Employee("Ebraham Jason Willson", 3, 10000);
         Employee mildred = new Employee("Ebraham Mildred Willson", 2, 10000);
