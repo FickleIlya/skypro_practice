@@ -2,8 +2,8 @@ package Introduction.CourseWork;
 
 public class Employee {
     private static int counter;
-    private int id;
-    private String fio;
+    private final int id;
+    private final String fio;
     private int department;
     private float salary;
 

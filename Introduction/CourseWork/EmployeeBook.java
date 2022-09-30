@@ -1,119 +1,85 @@
 package Introduction.CourseWork;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static java.lang.Math.abs;
 
 public class EmployeeBook {
-    private final Employee[] storage;
+    private final Map<Integer, Employee> storage;
 
-    public EmployeeBook(int arrayLength) {
-        if (arrayLength <= 0) {
-            throw new IllegalArgumentException("arrayLength must be greater than 0");
-        }
-        this.storage = new Employee[arrayLength];
+    public EmployeeBook() {
+        this.storage = new HashMap<>();
     }
 
     // Employees
     public void addEmployee(Employee employee) {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null) {
-                this.storage[i] = employee;
-                break;
-            } else if (i == storage.length - 1){
-                throw new ArrayStoreException("EmployeeBook is full");
-            }
+        if (storage.containsKey(employee.getId())) {
+            throw new IllegalArgumentException("Employee with id " + employee.getId() + " already exists.");
+        } else {
+            storage.put(employee.getId(), employee);
         }
     }
 
     public void deleteEmployee(String fio) {
-        if (fio == null) {
-            throw new IllegalArgumentException("FIO must be not null and ID be in [0, array length - 1]");
-        }
-
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i].getFio().equals(fio)){
-                storage[i] = null;
-                break;
+        for (Map.Entry<Integer, Employee> entry : storage.entrySet()) {
+            if (entry.getValue().getFio().equals(fio)) {
+                storage.remove(entry.getKey());
+                return;
             }
         }
+        throw new IllegalArgumentException("Employee with fio " + fio + " not found.");
     }
 
     public void getEmployees(){
-        for (Employee employee : storage) {
-            if (employee != null) {
-                System.out.print(employee + ", ");
-            }
+        for (Map.Entry<Integer, Employee> entry : storage.entrySet()) {
+            System.out.println(entry.getValue());
         }
     }
 
     public void changeSalaryByFIO(String fio, float newSalary){
-        int cnt = 1;
-        for (Employee employee : storage) {
-            if (employee != null && employee.getFio().equals(fio)) {
-                employee.setSalary(newSalary);
-                break;
+        for (Map.Entry<Integer, Employee> entry : storage.entrySet()) {
+            if (entry.getValue().getFio().equals(fio)) {
+                entry.getValue().setSalary(newSalary);
+                return;
             }
-            cnt += 1;
         }
-
-        if (cnt == storage.length) {
-            throw new ArrayStoreException("Employee not found");
-        }
+        throw new IllegalArgumentException("Employee with fio " + fio + " not found.");
     }
 
     public void changeDepartmentByFIO(String fio, int newDepartment){
-        int cnt = 1;
-        for (Employee employee : storage) {
-            if (employee != null && employee.getFio().equals(fio)) {
-                employee.setDepartment(newDepartment);
-                break;
+        for (Map.Entry<Integer, Employee> entry : storage.entrySet()) {
+            if (entry.getValue().getFio().equals(fio)) {
+                entry.getValue().setDepartment(newDepartment);
+                return;
             }
-            cnt += 1;
         }
-
-        if (cnt == storage.length) {
-            throw new ArrayStoreException("Employee not found");
-        }
+        throw new IllegalArgumentException("Employee with fio " + fio + " not found.");
     }
 
     public void getAllFIOEmployees(){
-        StringBuilder allFio = new StringBuilder();
-        for (Employee employee : storage) {
-            if (employee != null) {
-                allFio.append(employee.getFio()).append(", ");
-            }
+        for (Map.Entry<Integer, Employee> entry : storage.entrySet()) {
+            System.out.println(entry.getValue().getFio());
         }
-
-        if (allFio.toString().equals("")) {
-            throw new ArrayStoreException("EmployeeBook is empty");
-        }
-
-        System.out.println(allFio.substring(0, allFio.lastIndexOf(",")));
     }
 
     // Departments
-    public void departmentsEmployees(){
-        StringBuilder department1 = new StringBuilder("First department: ");
-        StringBuilder department2 = new StringBuilder("Second department: ");
-        StringBuilder department3 = new StringBuilder("Third department: ");
-        StringBuilder department4 = new StringBuilder("Fourth department: ");
-        StringBuilder department5 = new StringBuilder("Fifth department: ");
+    public void listOfEmployeesInDepartments(){
+        List<Employee> department1 = new ArrayList<>();
+        List<Employee> department2 = new ArrayList<>();
+        List<Employee> department3 = new ArrayList<>();
+        List<Employee> department4 = new ArrayList<>();
+        List<Employee> department5 = new ArrayList<>();
 
-        for (Employee employee : storage) {
-            if (employee != null) {
-                switch (employee.getDepartment()){
-                    case 1:
-                        department1.append(employee);
-                    case 2:
-                        department2.append(employee);
-                    case 3:
-                        department3.append(employee);
-                    case 4:
-                        department4.append(employee);
-                    case 5:
-                        department5.append(employee);
-                    default:
-                        throw new IllegalArgumentException("Unknown department");
-                }
+        for (Map.Entry<Integer, Employee> entry : storage.entrySet()) {
+            switch (entry.getValue().getDepartment()){
+                case 1 -> department1.add(entry.getValue());
+                case 2 -> department2.add(entry.getValue());
+                case 3 -> department3.add(entry.getValue());
+                case 4 -> department4.add(entry.getValue());
+                case 5 -> department5.add(entry.getValue());
             }
         }
         System.out.println(department1);
@@ -124,159 +90,140 @@ public class EmployeeBook {
     }
 
     public Employee employeeWithMinSalaryInDepartment(int department){
-        int id = 0;
-        float minSalary = storage[id].getSalary();
-
-        for (int i = 1; i < storage.length; i++) {
-            if (storage[i].getSalary() < minSalary && storage[i].getDepartment() == department) {
-                id = i;
-                minSalary = storage[i].getSalary();
+        Employee employeeWithMinSalary = null;
+        for (Map.Entry<Integer, Employee> entry : storage.entrySet()) {
+            if (entry.getValue().getDepartment() == department) {
+                if (employeeWithMinSalary == null) {
+                    employeeWithMinSalary = entry.getValue();
+                } else if (entry.getValue().getSalary() < employeeWithMinSalary.getSalary()) {
+                    employeeWithMinSalary = entry.getValue();
+                }
             }
         }
-        return storage[id];
+        if (employeeWithMinSalary == null) {
+            throw new IllegalArgumentException("Department " + department + " not found.");
+        }
+        return employeeWithMinSalary;
     }
 
     public Employee employeeWithMaxSalaryInDepartment(int department){
-        int id = 0;
-        float maxSalary = storage[id].getSalary();
-
-
-        for (int i = 1; i < storage.length; i++) {
-            if (storage[i].getSalary() > maxSalary && storage[i].getDepartment() == department) {
-                id = i;
-                maxSalary = storage[i].getSalary();
+        Employee employeeWithMaxSalary = null;
+        for (Map.Entry<Integer, Employee> entry : storage.entrySet()) {
+            if (entry.getValue().getDepartment() == department) {
+                if (employeeWithMaxSalary == null) {
+                    employeeWithMaxSalary = entry.getValue();
+                } else if (entry.getValue().getSalary() > employeeWithMaxSalary.getSalary()) {
+                    employeeWithMaxSalary = entry.getValue();
+                }
             }
         }
-        return storage[id];
+        if (employeeWithMaxSalary == null) {
+            throw new IllegalArgumentException("Department " + department + " not found.");
+        }
+        return employeeWithMaxSalary;
     }
 
     public String employeesInDepartment(int department){
-        StringBuilder employeesString = new StringBuilder("");
-        for (Employee employee : storage) {
-            if (employee != null && employee.getDepartment() == department) {
-                employeesString.append(employee.getId()).append(", ").append(employee.getFio()).append(", ").append(employee.getSalary()).append("; ");
+        StringBuilder employeesInDepartment = new StringBuilder("Employees in department " + department + ": ");
+        for (Map.Entry<Integer, Employee> entry : storage.entrySet()) {
+            if (entry.getValue().getDepartment() == department) {
+                employeesInDepartment.append(entry.getValue().getFio()).append(", ");
             }
         }
-
-        if (employeesString.toString().equals("")) {
-            throw new ArrayStoreException("Department is empty");
-        }
-
-        return employeesString.substring(0, employeesString.lastIndexOf(";"));
+        return employeesInDepartment.toString();
     }
 
     public float salaryCostsInDepartment(int department){
-        float total = 0.0f;
-
-        for (Employee employee : storage) {
-            if (employee != null && employee.getDepartment() == department) {
-                total += employee.getSalary();
+        float salaryCostsInDepartment = 0;
+        for (Map.Entry<Integer, Employee> entry : storage.entrySet()) {
+            if (entry.getValue().getDepartment() == department) {
+                salaryCostsInDepartment += entry.getValue().getSalary();
             }
         }
-        return total;
+        return salaryCostsInDepartment;
     }
 
     public float averageSalaryInDepartment(int department){
-        int countEmployees = 0;
-        for (Employee employee : storage) {
-            if (employee != null && employee.getDepartment() == department) {
-                countEmployees++;
+        float averageSalaryInDepartment = 0;
+        int count = 0;
+        for (Map.Entry<Integer, Employee> entry : storage.entrySet()) {
+            if (entry.getValue().getDepartment() == department) {
+                averageSalaryInDepartment += entry.getValue().getSalary();
+                count++;
             }
         }
-
-        if (countEmployees == 0) {
-            throw new ArithmeticException("Department is empty");
-        }
-        return this.salaryCostsInDepartment(department)/countEmployees;
+        return averageSalaryInDepartment / count;
     }
 
     public void diffSalaryWithChangeInDepartment(int department, float percent){
-        float diff;
-
-        for (Employee employee : storage) {
-            if (employee != null && employee.getDepartment() == department) {
-                diff = abs(employee.getSalary() - employee.getSalary()*percent);
-                System.out.println(employee.getFio() + ": " + diff);
+        for (Map.Entry<Integer, Employee> entry : storage.entrySet()) {
+            if (entry.getValue().getDepartment() == department) {
+                entry.getValue().setSalary(entry.getValue().getSalary() * (1 + percent / 100));
             }
-
         }
     }
 
     // Salary
     public float salaryCosts(){
-        float total = 0.0f;
-
-        for (Employee employee : storage) {
-            if (employee != null) {
-                total += employee.getSalary();
-            }
+        float salaryCosts = 0;
+        for (Map.Entry<Integer, Employee> entry : storage.entrySet()) {
+            salaryCosts += entry.getValue().getSalary();
         }
-        return total;
+        return salaryCosts;
     }
 
     public Employee employeeWithMinSalary(){
-        int id = 0;
-        float minSalary = storage[id].getSalary();
-
-        for (int i = 1; i < storage.length; i++) {
-            if (storage[i] != null && storage[i].getSalary() < minSalary) {
-                id = i;
-                minSalary = storage[i].getSalary();
+        Employee employeeWithMinSalary = null;
+        for (Map.Entry<Integer, Employee> entry : storage.entrySet()) {
+            if (employeeWithMinSalary == null) {
+                employeeWithMinSalary = entry.getValue();
+            } else if (entry.getValue().getSalary() < employeeWithMinSalary.getSalary()) {
+                employeeWithMinSalary = entry.getValue();
             }
         }
-        return storage[id];
+        return employeeWithMinSalary;
     }
 
     public Employee employeeWithMaxSalary(){
-        int id = 0;
-        float maxSalary = storage[id].getSalary();
-
-
-        for (int i = 1; i < storage.length; i++) {
-            if (storage[i] != null && storage[i].getSalary() > maxSalary) {
-                id = i;
-                maxSalary = storage[i].getSalary();
+        Employee employeeWithMaxSalary = null;
+        for (Map.Entry<Integer, Employee> entry : storage.entrySet()) {
+            if (employeeWithMaxSalary == null) {
+                employeeWithMaxSalary = entry.getValue();
+            } else if (entry.getValue().getSalary() > employeeWithMaxSalary.getSalary()) {
+                employeeWithMaxSalary = entry.getValue();
             }
         }
-        return storage[id];
+        return employeeWithMaxSalary;
     }
 
     public float averageSalary(){
-        int employeesCount = 0;
-        for (Employee employee : storage) {
-            if (employee != null) {
-                employeesCount++;
-            }
+        float averageSalary = 0;
+        int count = 0;
+        for (Map.Entry<Integer, Employee> entry : storage.entrySet()) {
+            averageSalary += entry.getValue().getSalary();
+            count++;
         }
-
-        if (employeesCount == 0) {
-            throw new ArithmeticException("EmployeeBook is empty");
-        }
-        return this.salaryCosts() / employeesCount;
+        return averageSalary / count;
     }
 
     public void diffSalaryWithChange(float percent){
-        for (Employee employee : storage) {
-            if (employee != null) {
-                float diff = abs(employee.getSalary() - employee.getSalary()*percent);
-                System.out.println(employee.getFio() + ": " + diff);
-            }
-
+        for (Map.Entry<Integer, Employee> entry : storage.entrySet()) {
+            entry.getValue().setSalary(entry.getValue().getSalary() * (1 + percent / 100));
         }
     }
 
     public void employeesWithSalaryLT(float salary){
-        for (Employee employee : storage) {
-            if (employee != null && employee.getSalary() < salary){
-                System.out.println(employee.getId() + ", " + employee.getFio() + ", " + employee.getSalary());
+        for (Map.Entry<Integer, Employee> entry : storage.entrySet()) {
+            if (entry.getValue().getSalary() < salary) {
+                System.out.println(entry.getValue());
             }
         }
     }
 
     public void employeesWithSalaryGTE(float salary){
-        for (Employee employee : storage) {
-            if (employee != null && employee.getSalary() >= salary){
-                System.out.println(employee.getId() + ", " + employee.getFio() + ", " + employee.getSalary());
+        for (Map.Entry<Integer, Employee> entry : storage.entrySet()) {
+            if (entry.getValue().getSalary() >= salary) {
+                System.out.println(entry.getValue());
             }
         }
     }
